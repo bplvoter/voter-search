@@ -84,12 +84,26 @@ Search
 <script>
 
 let voterData = [];
+let filteredData = [];
+let currentPage = 1;
+const pageSize = 100;
 
 fetch("voters.json")
 .then(response => response.json())
 .then(data => {
 
     voterData = data;
+    voterData.forEach(v => {
+
+    v.searchText =
+    (
+        (v.details || "") + " " +
+        (v.house_no || "") + " " +
+        (v.epic || "") + " " +
+        (v.age || "")
+    ).toLowerCase();
+
+});
 
     document.getElementById("status").innerHTML =
         "Loaded " + data.length + " voter records";
@@ -112,53 +126,84 @@ function searchData(){
         .trim()
         .toLowerCase();
 
-    if(query === ""){
+    if(query.length < 3){
+
         document.getElementById("results").innerHTML =
-            "Please enter a search value";
+            "Enter at least 3 characters";
+
         return;
     }
 
-    let html = "";
-    let count = 0;
+    filteredData = voterData.filter(v =>
+        v.searchText &&
+        v.searchText.includes(query)
+    );
 
-    voterData.forEach(v => {
+    currentPage = 1;
 
-        const searchable =
-            JSON.stringify(v).toLowerCase();
+    renderPage();
+}
 
-        if(searchable.includes(query)){
+function renderPage(){
 
-            count++;
+    let start = (currentPage - 1) * pageSize;
+    let end = start + pageSize;
 
-            html += `
-            <div class="result">
-                <b>Details:</b> ${v.details || ""}<br>
-                <b>House No:</b> ${v.house_no || ""}<br>
-                <b>Age:</b> ${v.age || ""}<br>
-                <b>EPIC:</b> ${v.epic || ""}<br>
-                <b>PDF:</b> ${v.pdf || ""}<br>
-                <b>Page:</b> ${v.page || ""}<br>
-            </div>
-            `;
+    let pageData = filteredData.slice(start,end);
 
-        }
+    let html =
+        "<h3>Total Matches: " +
+        filteredData.length +
+        "</h3>";
 
+    pageData.forEach(v => {
+
+        html += `
+        <div class="result">
+            <b>Details:</b> ${v.details || ""}<br>
+            <b>House No:</b> ${v.house_no || ""}<br>
+            <b>Age:</b> ${v.age || ""}<br>
+            <b>EPIC:</b> ${v.epic || ""}
+        </div>
+        `;
     });
 
-    if(count === 0){
+    let totalPages =
+        Math.ceil(filteredData.length / pageSize);
 
-        html =
-            "<div class='result'>No records found</div>";
+    html += `
+    <div style="text-align:center;margin-top:20px;">
+    `;
 
-    }else{
-
-        html =
-            "<h3>Total Matches: " + count + "</h3>" + html;
-
+    if(currentPage > 1){
+        html +=
+        `<button onclick="changePage(${currentPage-1})">
+        Previous
+        </button>`;
     }
 
-    document.getElementById("results").innerHTML = html;
+    html += ` Page ${currentPage} of ${totalPages} `;
 
+    if(currentPage < totalPages){
+        html +=
+        `<button onclick="changePage(${currentPage+1})">
+        Next
+        </button>`;
+    }
+
+    html += `</div>`;
+
+    document.getElementById("results").innerHTML =
+        html;
+}
+
+function changePage(page){
+
+    currentPage = page;
+
+    renderPage();
+
+    window.scrollTo(0,0);
 }
 
 </script>
