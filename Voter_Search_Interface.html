@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voter Search Portal</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:1000px;margin:auto;padding:20px}
+.card{border:1px solid #ddd;border-radius:8px;padding:16px;margin-top:16px}
+input,select,button{padding:10px;margin:5px;width:100%;box-sizing:border-box}
+.result{background:#f5f5f5;padding:12px;border-radius:6px}
+</style>
+</head>
+<body>
+<h1>🔎 Voter Search Portal</h1>
+<p>English | తెలుగు</p>
+
+<div class="card">
+<h3>Search</h3>
+<input placeholder="Name / పేరు">
+<input placeholder="EPIC / Voter ID">
+<input placeholder="House No">
+<select>
+<option>All Booths</option>
+</select>
+<button>Search</button>
+</div>
+
+<div class="card">
+<h3>Sample Result</h3>
+<div class="result">
+<b>Name:</b> Mohammed Example<br>
+<b>Father/Husband:</b> Abdul Example<br>
+<b>Age:</b> 42<br>
+<b>Gender:</b> Male<br>
+<b>House No:</b> 18/44<br>
+<b>EPIC:</b> APXXXXXXXXX<br>
+<b>Booth:</b> 199<br>
+<b>Ward:</b> 18<br>
+<b>Constituency:</b> Example Constituency
+</div>
+</div>
+
+<div class="card">
+<h3>Admin</h3>
+<input type="file" multiple>
+<button>Upload PDFs</button>
+</div>
+</body>
+</html>
