@@ -1,42 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BPL Voter Search</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+    background:#f5f5f5;
+}
+
+h1{
+    text-align:center;
+}
+
+.search-box{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+input{
+    flex:1;
+    padding:12px;
+    font-size:16px;
+}
+
+button{
+    padding:12px 20px;
+    cursor:pointer;
+}
+
+.result{
+    background:white;
+    border-radius:8px;
+    padding:15px;
+    margin-bottom:10px;
+    box-shadow:0 1px 4px rgba(0,0,0,0.1);
+}
+
+.info{
+    color:#666;
+    margin-bottom:10px;
+}
+
+.loading{
+    color:green;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>BPL Voter Search</h1>
+
+<div class="info">
+Search by Name, House Number, EPIC Number, Age or any text.
+</div>
+
+<div id="status" class="loading">
+Loading voter database...
+</div>
+
+<div class="search-box">
+<input
+    type="text"
+    id="searchBox"
+    placeholder="Enter Name / House No / EPIC"
+    onkeyup="if(event.key==='Enter') searchData();">
+
+<button onclick="searchData()">
+Search
+</button>
+</div>
+
+<div id="results"></div>
+
+<script>
+
+let voterData = [];
+
 fetch("voters.json")
-.then(r => r.json())
+.then(response => response.json())
 .then(data => {
+
     voterData = data;
+
+    document.getElementById("status").innerHTML =
+        "Loaded " + data.length + " voter records";
+
+})
+.catch(error => {
+
+    document.getElementById("status").innerHTML =
+        "ERROR: voters.json not found";
+
+    console.error(error);
+
 });
 
 function searchData(){
 
-    let q =
+    const query =
         document.getElementById("searchBox")
         .value
+        .trim()
         .toLowerCase();
+
+    if(query === ""){
+        document.getElementById("results").innerHTML =
+            "Please enter a search value";
+        return;
+    }
 
     let html = "";
     let count = 0;
 
     voterData.forEach(v => {
 
-        if(
-            JSON.stringify(v)
-            .toLowerCase()
-            .includes(q)
-        ){
+        const searchable =
+            JSON.stringify(v).toLowerCase();
+
+        if(searchable.includes(query)){
 
             count++;
 
             html += `
             <div class="result">
-                <b>Name/Details:</b> ${v.details}<br>
-                <b>House No:</b> ${v.house_no}<br>
-                <b>Age:</b> ${v.age}<br>
-                <b>EPIC:</b> ${v.epic}<br>
-                <b>PDF:</b> ${v.pdf}<br>
+                <b>Details:</b> ${v.details || ""}<br>
+                <b>House No:</b> ${v.house_no || ""}<br>
+                <b>Age:</b> ${v.age || ""}<br>
+                <b>EPIC:</b> ${v.epic || ""}<br>
+                <b>PDF:</b> ${v.pdf || ""}<br>
+                <b>Page:</b> ${v.page || ""}<br>
             </div>
             `;
+
         }
 
     });
 
-    document.getElementById("results").innerHTML =
-        `<h3>${count} matches</h3>` + html;
+    if(count === 0){
+
+        html =
+            "<div class='result'>No records found</div>";
+
+    }else{
+
+        html =
+            "<h3>Total Matches: " + count + "</h3>" + html;
+
+    }
+
+    document.getElementById("results").innerHTML = html;
+
 }
+
+</script>
+
+</body>
+</html>
