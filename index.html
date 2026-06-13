@@ -79,6 +79,15 @@ Search
 </button>
 </div>
 
+<div style="margin-top:10px">
+<input
+type="text"
+id="filterBox"
+placeholder="Filter current results..."
+onkeyup="filterResults()"
+style="width:100%;padding:10px;">
+</div>
+
 <div id="results"></div>
 
 <script>
@@ -223,6 +232,58 @@ function changePage(page){
     window.scrollTo(0,0);
 }
 
+function filterResults(){
+
+    let q =
+    document.getElementById("filterBox")
+    .value
+    .trim()
+    .toLowerCase();
+
+    if(q === ""){
+
+        renderPage();
+        return;
+    }
+
+    let html = "";
+    let count = 0;
+
+    filteredData.forEach(v => {
+
+        let searchable =
+        JSON.stringify(v).toLowerCase();
+
+        if(searchable.includes(q)){
+
+            count++;
+
+            html += `
+            <div class="result">
+
+                <b>Details:</b> ${v.details || ""}<br>
+
+                <b>House No:</b> ${v.house_no || ""}<br>
+
+                <b>Age:</b> ${v.age || ""}<br>
+
+                <b>EPIC:</b> ${v.epic || ""}<br>
+
+                <b>PDF:</b> ${v.pdf || ""}<br>
+
+                <b>Page:</b> ${v.page || ""}
+
+            </div>
+            `;
+        }
+    });
+
+    document.getElementById("results").innerHTML =
+    "<h3>Filtered Matches: " +
+    count +
+    "</h3>" +
+    html;
+}
 </script>
 
 </body>
