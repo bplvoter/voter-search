@@ -80,7 +80,10 @@ Search
 </div>
 
 <div style="margin-top:10px">
-<select id="filterType" disabled style="width:100%;padding:10px;margin-bottom:10px;">
+<select id="filterType"
+        disabled
+        onchange="filterResults()"
+        style="width:100%;padding:10px;margin-bottom:10px;">
     <option value="all">All Fields</option>
     <option value="name">Name</option>
     <option value="house">House Number</option>
@@ -246,121 +249,114 @@ function changePage(page){
 }
 
 function filterResults(){
-    alert("Filter Working");
 
-    let q =
+```
+let q =
     document.getElementById("filterBox")
     .value
     .trim()
     .toLowerCase();
-    let type =
-document.getElementById("filterType").value;
 
-    if(q === ""){
+let type =
+    document.getElementById("filterType").value;
 
-        renderPage();
-        return;
+if(q === ""){
+
+    renderPage();
+    return;
+}
+
+let html = "";
+let count = 0;
+
+filteredData.forEach(v => {
+
+    let searchable =
+        JSON.stringify(v).toLowerCase();
+
+    let match = false;
+
+    if(type === "all"){
+
+        match = searchable.includes(q);
+
+    }
+    else if(type === "name"){
+
+        match = (v.details || "")
+            .toLowerCase()
+            .includes(q);
+
+    }
+    else if(type === "house"){
+
+        match = String(v.house_no || "")
+            .trim()
+            .toLowerCase() === q;
+
+    }
+    else if(type === "age"){
+
+        match = String(v.age || "")
+            .trim()
+            .toLowerCase() === q;
+
+    }
+    else if(type === "epic"){
+
+        match = (v.epic || "")
+            .toLowerCase()
+            .includes(q);
+
+    }
+    else if(type === "pdf"){
+
+        match = String(v.pdf || "")
+            .toLowerCase()
+            .includes(q);
+
+    }
+    else if(type === "page"){
+
+        match = String(v.page || "")
+            .trim()
+            .toLowerCase() === q;
+
     }
 
-    let html = "";
-    let count = 0;
+    if(match){
 
-    filteredData.forEach(v => {
+        count++;
 
-        let searchable =
-        JSON.stringify(v).toLowerCase();
-let match = false;
+        html += `
+        <div class="result">
 
-if(type === "all"){
+            <b>Details:</b> ${v.details || ""}<br>
 
-```
-match = searchable.includes(q);
-```
+            <b>House No:</b> ${v.house_no || ""}<br>
 
-}
-else if(type === "name"){
+            <b>Age:</b> ${v.age || ""}<br>
 
-```
-match = (v.details || "")
-    .toLowerCase()
-    .includes(q);
-```
+            <b>EPIC:</b> ${v.epic || ""}<br>
 
-}
-else if(type === "house"){
+            <b>PDF:</b> ${v.pdf || ""}<br>
 
-```
-match = (v.house_no || "")
-    .toLowerCase() === q;
-```
+            <b>Page:</b> ${v.page || ""}
 
-}
-else if(type === "age"){
+        </div>
+        `;
+    }
+});
 
-```
-match = String(v.age || "")
-    .toLowerCase() === q;
-```
-
-}
-else if(type === "epic"){
-
-```
-match = (v.epic || "")
-    .toLowerCase()
-    .includes(q);
-```
-
-}
-else if(type === "pdf"){
-
-```
-match = (v.pdf || "")
-    .toLowerCase()
-    .includes(q);
-```
-
-}
-else if(type === "page"){
-
-```
-match = String(v.page || "")
-    .toLowerCase() === q;
-```
-
-}
-
-if(match){
-
-
-            count++;
-
-            html += `
-            <div class="result">
-
-                <b>Details:</b> ${v.details || ""}<br>
-
-                <b>House No:</b> ${v.house_no || ""}<br>
-
-                <b>Age:</b> ${v.age || ""}<br>
-
-                <b>EPIC:</b> ${v.epic || ""}<br>
-
-                <b>PDF:</b> ${v.pdf || ""}<br>
-
-                <b>Page:</b> ${v.page || ""}
-
-            </div>
-            `;
-        }
-    });
-
-    document.getElementById("results").innerHTML =
+document.getElementById("results").innerHTML =
     "<h3>Filtered Matches: " +
     count +
     "</h3>" +
     html;
+```
+
 }
+
 </script>
 
 </body>
