@@ -1,86 +1,42 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>BPL Voter Search</title>
-
-<style>
-body{
-    font-family: Arial, sans-serif;
-    margin:20px;
-}
-input{
-    width:80%;
-    padding:10px;
-    font-size:18px;
-}
-button{
-    padding:10px;
-}
-.result{
-    border:1px solid #ddd;
-    margin:10px 0;
-    padding:10px;
-    border-radius:5px;
-}
-</style>
-</head>
-
-<body>
-
-<h2>BPL Voter Search</h2>
-
-<input type="text" id="searchBox"
-placeholder="Search Name / House No / EPIC">
-
-<button onclick="searchData()">Search</button>
-
-<div id="results"></div>
-
-<script>
-
-let voterData=[];
-
-fetch("voters_raw.json")
-.then(res=>res.json())
-.then(data=>{
-    voterData=data;
-    console.log("Loaded",data.length,"pages");
+fetch("voters.json")
+.then(r => r.json())
+.then(data => {
+    voterData = data;
 });
 
 function searchData(){
 
-    const q=document.getElementById("searchBox")
-            .value
-            .toLowerCase();
+    let q =
+        document.getElementById("searchBox")
+        .value
+        .toLowerCase();
 
-    let html="";
-    let count=0;
+    let html = "";
+    let count = 0;
 
-    voterData.forEach(page=>{
+    voterData.forEach(v => {
 
-        if(page.raw_text &&
-           page.raw_text.toLowerCase().includes(q)){
+        if(
+            JSON.stringify(v)
+            .toLowerCase()
+            .includes(q)
+        ){
 
             count++;
 
             html += `
             <div class="result">
-                <b>${page.pdf}</b><br>
-                Page: ${page.page}<br><br>
-                <pre style="white-space:pre-wrap">
-${page.raw_text.substring(0,2000)}
-                </pre>
+                <b>Name/Details:</b> ${v.details}<br>
+                <b>House No:</b> ${v.house_no}<br>
+                <b>Age:</b> ${v.age}<br>
+                <b>EPIC:</b> ${v.epic}<br>
+                <b>PDF:</b> ${v.pdf}<br>
             </div>
             `;
         }
+
     });
 
     document.getElementById("results").innerHTML =
-        `<h3>${count} matches found</h3>` + html;
+        `<h3>${count} matches</h3>` + html;
 }
-
-</script>
-
-</body>
-</html>
