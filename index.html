@@ -80,7 +80,7 @@ Search
 </div>
 
 <div style="margin-top:10px">
-<select id="filterType" style="width:100%;padding:10px;margin-bottom:10px;">
+<select id="filterType" disabled style="width:100%;padding:10px;margin-bottom:10px;">
     <option value="all">All Fields</option>
     <option value="name">Name</option>
     <option value="house">House Number</option>
@@ -93,6 +93,7 @@ Search
 <input
 type="text"
 id="filterBox"
+disabled
 placeholder="Filter current results..."
 onkeyup="filterResults()"
 style="width:100%;padding:10px;margin-bottom:10px;">
@@ -161,6 +162,8 @@ function searchData(){
     );
 
     currentPage = 1;
+    document.getElementById("filterType").disabled = false;
+document.getElementById("filterBox").disabled = false;
 
     renderPage();
 }
@@ -243,6 +246,7 @@ function changePage(page){
 }
 
 function filterResults(){
+    alert("Filter Working");
 
     let q =
     document.getElementById("filterBox")
