@@ -95,13 +95,15 @@ fetch("voters.json")
     voterData = data;
     voterData.forEach(v => {
 
-    v.searchText =
-    (
-        (v.details || "") + " " +
-        (v.house_no || "") + " " +
-        (v.epic || "") + " " +
-        (v.age || "")
-    ).toLowerCase();
+   v.searchText =
+(
+    (v.details || "") + " " +
+    (v.house_no || "") + " " +
+    (v.epic || "") + " " +
+    (v.age || "") + " " +
+    (v.pdf || "") + " " +
+    (v.page || "")
+).toLowerCase();
 
 });
 
@@ -158,14 +160,29 @@ function renderPage(){
 
     pageData.forEach(v => {
 
-        html += `
-        <div class="result">
-            <b>Details:</b> ${v.details || ""}<br>
-            <b>House No:</b> ${v.house_no || ""}<br>
-            <b>Age:</b> ${v.age || ""}<br>
-            <b>EPIC:</b> ${v.epic || ""}
-        </div>
-        `;
+       html += `
+<div class="result">
+
+<div style="
+font-size:18px;
+font-weight:bold;
+color:#006400;
+margin-bottom:8px;">
+${v.details || ""}
+</div>
+
+<b>🏠 House No:</b> ${v.house_no || "-"}<br>
+
+<b>🎂 Age:</b> ${v.age || "-"}<br>
+
+<b>🆔 EPIC:</b> ${v.epic || "-"}<br>
+
+<b>📄 Booth/PDF:</b> ${v.pdf || "-"}<br>
+
+<b>📑 Page:</b> ${v.page || "-"}
+
+</div>
+`;
     });
 
     let totalPages =
