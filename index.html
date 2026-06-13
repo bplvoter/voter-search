@@ -80,12 +80,22 @@ Search
 </div>
 
 <div style="margin-top:10px">
+<select id="filterType" style="width:100%;padding:10px;margin-bottom:10px;">
+    <option value="all">All Fields</option>
+    <option value="name">Name</option>
+    <option value="house">House Number</option>
+    <option value="age">Age</option>
+    <option value="epic">EPIC</option>
+    <option value="pdf">PDF / Booth</option>
+    <option value="page">Page Number</option>
+</select>
+
 <input
 type="text"
 id="filterBox"
 placeholder="Filter current results..."
 onkeyup="filterResults()"
-style="width:100%;padding:10px;">
+style="width:100%;padding:10px;margin-bottom:10px;">
 </div>
 
 <div id="results"></div>
@@ -239,6 +249,8 @@ function filterResults(){
     .value
     .trim()
     .toLowerCase();
+    let type =
+document.getElementById("filterType").value;
 
     if(q === ""){
 
@@ -253,20 +265,69 @@ function filterResults(){
 
         let searchable =
         JSON.stringify(v).toLowerCase();
+let match = false;
 
-       if(
+if(type === "all"){
 
-    (v.house_no || "").toLowerCase() === q ||
+```
+match = searchable.includes(q);
+```
 
-    (v.details || "").toLowerCase().includes(q) ||
+}
+else if(type === "name"){
 
-    (v.epic || "").toLowerCase().includes(q) ||
+```
+match = (v.details || "")
+    .toLowerCase()
+    .includes(q);
+```
 
-    (v.pdf || "").toLowerCase().includes(q) ||
+}
+else if(type === "house"){
 
-    String(v.page || "").toLowerCase().includes(q)
+```
+match = (v.house_no || "")
+    .toLowerCase() === q;
+```
 
-){
+}
+else if(type === "age"){
+
+```
+match = String(v.age || "")
+    .toLowerCase() === q;
+```
+
+}
+else if(type === "epic"){
+
+```
+match = (v.epic || "")
+    .toLowerCase()
+    .includes(q);
+```
+
+}
+else if(type === "pdf"){
+
+```
+match = (v.pdf || "")
+    .toLowerCase()
+    .includes(q);
+```
+
+}
+else if(type === "page"){
+
+```
+match = String(v.page || "")
+    .toLowerCase() === q;
+```
+
+}
+
+if(match){
+
 
             count++;
 
