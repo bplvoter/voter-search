@@ -273,60 +273,46 @@ let match = false;
 
 if(type === "all"){
 
-```
 match = searchable.includes(q);
-```
 
 }
 else if(type === "name"){
 
-```
 match = (v.details || "")
     .toLowerCase()
     .includes(q);
-```
 
 }
 else if(type === "house"){
 
-```
 match = (v.house_no || "")
     .toLowerCase() === q;
-```
 
 }
 else if(type === "age"){
 
-```
 match = String(v.age || "")
     .toLowerCase() === q;
-```
 
 }
 else if(type === "epic"){
 
-```
 match = (v.epic || "")
     .toLowerCase()
     .includes(q);
-```
 
 }
 else if(type === "pdf"){
 
-```
 match = (v.pdf || "")
     .toLowerCase()
     .includes(q);
-```
 
 }
 else if(type === "page"){
 
-```
 match = String(v.page || "")
     .toLowerCase() === q;
-```
 
 }
 
