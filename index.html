@@ -254,6 +254,7 @@ function filterResults(){
     .toLowerCase();
     let type =
 document.getElementById("filterType").value;
+    console.log("Selected:", type);
 
     if(q === ""){
 
@@ -266,7 +267,8 @@ document.getElementById("filterType").value;
 
     filteredData.forEach(v => {
 
-        let searchable = v.searchText || "";
+        let searchable =
+JSON.stringify(v).toLowerCase();
 let match = false;
 
 if(type === "all"){
