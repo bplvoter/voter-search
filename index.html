@@ -254,7 +254,19 @@ function filterResults(){
         let searchable =
         JSON.stringify(v).toLowerCase();
 
-        if(searchable.includes(q)){
+       if(
+
+    (v.house_no || "").toLowerCase() === q ||
+
+    (v.details || "").toLowerCase().includes(q) ||
+
+    (v.epic || "").toLowerCase().includes(q) ||
+
+    (v.pdf || "").toLowerCase().includes(q) ||
+
+    String(v.page || "").toLowerCase().includes(q)
+
+){
 
             count++;
 
