@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF 2026 Portal</title>
+<style>
+:root {
+    --bg: #f4f7f4;
+    --card: #ffffff;
+    --text: #1f2d1f;
+    --muted: #5f6f5f;
+    --green: #0d6b27;
+    --green-dark: #094c1b;
+    --border: #dce8dc;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(180deg, #eef7ee, var(--bg));
+    color: var(--text);
+}
+
+.wrapper {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 28px 18px 40px;
+}
+
+.hero {
+    background: linear-gradient(135deg, #0f7b31, #0b4f1c);
+    color: white;
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 22px;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+}
+
+.hero h1 {
+    margin: 0 0 8px;
+    font-size: 2rem;
+}
+
+.hero p {
+    margin: 0;
+    color: #e8f8ea;
+}
+
+.toolbar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.search-box {
+    flex: 1;
+    min-width: 240px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-size: 15px;
+    background: white;
+}
+
+.badge {
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: #e6f5e8;
+    color: var(--green-dark);
+    font-weight: bold;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.09);
+}
+
+.card .file-name {
+    display: block;
+    font-weight: bold;
+    color: var(--green);
+    margin-bottom: 10px;
+}
+
+.card a {
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+    background: var(--green);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.card a:hover {
+    background: var(--green-dark);
+}
+
+.empty {
+    text-align: center;
+    color: var(--muted);
+    background: white;
+    border: 1px dashed var(--border);
+    padding: 20px;
+    border-radius: 12px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="hero">
+        <h1>📥 PDF 2026 Download Portal</h1>
+        <p>Browse and download each PDF file individually from the 2026 voter list package.</p>
+    </div>
+
+    <div class="toolbar">
+        <input id="searchInput" class="search-box" type="text" placeholder="Search PDF files...">
+        <div class="badge" id="countBadge">0 files</div>
+    </div>
+
+    <div id="pdfGrid" class="grid"></div>
+</div>
+
+<script>
+const files = [
+    "PART-89.pdf", "PART-90.pdf", "PART-91.pdf", "PART-92.pdf", "PART-93.pdf", "PART-94.pdf",
+    "PART-95.pdf", "PART-96.pdf", "PART-97.pdf", "PART-98.pdf", "PART-99.pdf", "PART-100.pdf",
+    "PART-101.pdf", "PART-102.pdf", "PART-103.pdf", "PART-104.pdf", "PART-105.pdf", "PART-106.pdf",
+    "PART-107.pdf", "PART-108.pdf", "PART-109.pdf", "PART-110.pdf", "PART-111.pdf", "PART-112.pdf",
+    "PART-113.pdf", "PART-114.pdf", "PART-115.pdf", "PART-116.pdf", "PART-117.pdf", "PART-118.pdf",
+    "PART-119.pdf", "PART-120.pdf", "PART-121.pdf", "PART-122.pdf", "PART-123.pdf", "PART-124.pdf",
+    "PART-125.pdf"
+];
+
+const pdfGrid = document.getElementById("pdfGrid");
+const searchInput = document.getElementById("searchInput");
+const countBadge = document.getElementById("countBadge");
+
+function renderFiles(filterText = "") {
+    const query = filterText.trim().toLowerCase();
+    const filtered = files.filter(name => name.toLowerCase().includes(query));
+
+    countBadge.textContent = `${filtered.length} file${filtered.length === 1 ? "" : "s"}`;
+
+    if (!filtered.length) {
+        pdfGrid.innerHTML = '<div class="empty">No matching PDFs found.</div>';
+        return;
+    }
+
+    pdfGrid.innerHTML = filtered.map(fileName => `
+        <div class="card">
+            <span class="file-name">${fileName}</span>
+            <a href="pdf2026/${fileName}" download>Download</a>
+        </div>
+    `).join("");
+}
+
+searchInput.addEventListener("input", (e) => {
+    renderFiles(e.target.value);
+});
+
+renderFiles();
+</script>
+</body>
+</html>
