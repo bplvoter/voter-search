@@ -3,124 +3,227 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BPL Voter Search</title>
+<title>Banaganapalli Voter Helpline | Andhra Pradesh SIR Draft List 2026 Search</title>
 
 <style>
-body{
-    font-family: Arial, sans-serif;
-    max-width:1200px;
-    margin:auto;
-    padding:20px;
-    background:#f5f5f5;
+:root {
+    --bg: #f3f7f3;
+    --card: #ffffff;
+    --text: #1f2d1f;
+    --muted: #5f6f5f;
+    --green: #0d6b27;
+    --green-dark: #094c1b;
+    --border: #d8e5d8;
 }
 
-h1{
-    text-align:center;
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(180deg, #eef7ee, var(--bg));
+    color: var(--text);
 }
 
-.search-box{
-    display:flex;
-    gap:10px;
-    margin-bottom:20px;
+.page-shell {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 24px 18px 40px;
 }
 
-input{
-    flex:1;
-    padding:12px;
-    font-size:16px;
+.hero {
+    background: linear-gradient(135deg, #0f7b31, #0b4f1c);
+    color: white;
+    border-radius: 18px;
+    padding: 26px;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+    margin-bottom: 18px;
 }
 
-button{
-    padding:12px 20px;
-    cursor:pointer;
+.hero h1 {
+    margin: 0 0 8px;
+    text-align: left;
+    font-size: 2rem;
 }
 
-.result{
-    background:white;
-    border-radius:8px;
-    padding:15px;
-    margin-bottom:10px;
-    box-shadow:0 1px 4px rgba(0,0,0,0.1);
+.hero .info {
+    color: #e8f8ea;
+    margin: 0;
+    font-size: 1rem;
 }
 
-.info{
-    color:#666;
-    margin-bottom:10px;
+.status-pill {
+    display: inline-block;
+    margin-top: 14px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.22);
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-weight: bold;
 }
 
-.loading{
-    color:green;
-    font-weight:bold;
+.action-grid {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0 0 18px;
+}
+
+.action-link {
+    display: inline-block;
+    background: var(--green);
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: bold;
+    box-shadow: 0 6px 14px rgba(13, 107, 39, 0.22);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.action-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 18px rgba(13, 107, 39, 0.28);
+}
+
+.panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    margin-bottom: 16px;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.search-box input,
+.panel input,
+.panel select {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 15px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: white;
+}
+
+.search-box button {
+    padding: 12px 18px;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    background: var(--green);
+    color: white;
+    font-weight: bold;
+}
+
+.search-box button:hover {
+    background: var(--green-dark);
+}
+
+.result {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+}
+
+.result .name {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--green);
+    margin-bottom: 8px;
+}
+
+.info {
+    color: var(--muted);
+    margin-bottom: 10px;
+}
+
+.loading {
+    color: green;
+    font-weight: bold;
+}
+
+.results-meta {
+    margin-bottom: 12px;
+    color: var(--green-dark);
+    font-weight: bold;
+}
+
+.pager {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pager button {
+    padding: 10px 14px;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    background: #e8f5e9;
+    color: var(--green-dark);
+    font-weight: bold;
+    margin: 0 6px;
 }
 </style>
 </head>
 
 <body>
+<div class="page-shell">
+    <div class="hero">
+        <h1>Banaganapalli Voter Helpline</h1>
+        <p class="info">Andhra Pradesh SIR Draft List 2026 Search Portal — find voter details by Name (Telugu only), House Number, EPIC Number, Age, or any text.</p>
+        <div id="status" class="status-pill">Loading 2002 SIR voter database...</div>
+    </div>
 
-<h1>BPL Voter Search</h1>
+    <div class="action-grid">
+        <a class="action-link" href="wards.html">📂 2002 Ward Wise Voter List</a>
+        <a class="action-link" href="pdf2026.html">📥 SIR DRAFT Voter List 2026 PART WISE</a>
+        <a class="action-link" href="https://voters.eci.gov.in/download-eroll?stateCode=S01" target="_blank" rel="noopener">🔗 Andhra Pradesh SIR Draft List 2026 Search</a>
+    </div>
 
-<div class="info">
-Search by Name(Telugu only),House Number EPIC Number, Age or any text.
+    <div class="panel">
+        <div class="search-box">
+            <input
+                type="text"
+                id="searchBox"
+                placeholder="Search 2002 SIR Voter List by Name / House No / EPIC"
+                onkeyup="if(event.key==='Enter') searchData();">
+
+            <button onclick="searchData()">Search Voters</button>
+        </div>
+
+        <select id="filterType" disabled onchange="filterResults()">
+            <option value="all">All Fields</option>
+            <option value="name">Name</option>
+            <option value="house">House Number</option>
+            <option value="age">Age</option>
+            <option value="epic">EPIC</option>
+            <option value="pdf">PDF / Booth</option>
+            <option value="page">Page Number</option>
+        </select>
+
+        <div style="margin-top:10px;">
+            <input
+                type="text"
+                id="filterBox"
+                disabled
+                placeholder="Filter current results..."
+                onkeyup="filterResults()">
+        </div>
+    </div>
+
+    <div id="results"></div>
 </div>
-
-<div id="status" class="loading">
-Loading voter database...
-</div>
-
-    <div style="margin-bottom:15px;text-align:center;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-    <a href="wards.html"
-       style="
-       background:#006400;
-       color:white;
-       padding:10px 15px;
-       text-decoration:none;
-       border-radius:5px;">
-       📂 Ward Wise PDF List
-    </a>
-    <a href="pdf2026.html"
-       style="
-       background:#006400;
-       color:white;
-       padding:10px 15px;
-       text-decoration:none;
-       border-radius:5px;">
-       📥 PDF 2026 Downloads
-    </a>
-</div>
-
-<div class="search-box">
-<input
-    type="text"
-    id="searchBox"
-    placeholder="Enter Name(Telugu Only) / House No / EPIC"
-    onkeyup="if(event.key==='Enter') searchData();">
-
-<button onclick="searchData()">
-Search
-</button>
-</div>
-
-<div style="margin-top:10px">
-<select id="filterType" disabled onchange="filterResults()" style="width:100%;padding:10px;margin-bottom:10px;">
-    <option value="all">All Fields</option>
-    <option value="name">Name</option>
-    <option value="house">House Number</option>
-    <option value="age">Age</option>
-    <option value="epic">EPIC</option>
-    <option value="pdf">PDF / Booth</option>
-    <option value="page">Page Number</option>
-</select>
-
-<input
-type="text"
-id="filterBox"
-disabled
-placeholder="Filter current results..."
-onkeyup="filterResults()"
-style="width:100%;padding:10px;margin-bottom:10px;">
-</div>
-
-<div id="results"></div>
 
 <script>
 
@@ -197,22 +300,16 @@ function renderPage(){
     let pageData = filteredData.slice(start,end);
 
     let html =
-        "<h3>Total Matches: " +
+        "<div class='results-meta'>Total Matches: " +
         filteredData.length +
-        "</h3>";
+        "</div>";
 
     pageData.forEach(v => {
 
        html += `
 <div class="result">
 
-<div style="
-font-size:18px;
-font-weight:bold;
-color:#006400;
-margin-bottom:8px;">
-${v.details || ""}
-</div>
+<div class="name">${v.details || ""}</div>
 
 <b>🏠 House No:</b> ${v.house_no || "-"}<br>
 
@@ -232,7 +329,7 @@ ${v.details || ""}
         Math.ceil(filteredData.length / pageSize);
 
     html += `
-    <div style="text-align:center;margin-top:20px;">
+    <div class="pager">
     `;
 
     if(currentPage > 1){
@@ -363,9 +460,9 @@ if(match){
     });
 
     document.getElementById("results").innerHTML =
-    "<h3>Filtered Matches: " +
+    "<div class='results-meta'>Filtered Matches: " +
     count +
-    "</h3>" +
+    "</div>" +
     html;
 }
 </script>
